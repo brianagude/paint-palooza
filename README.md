@@ -1,16 +1,39 @@
-# React + Vite
+# Paint Palooza
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-based painting app styled after the classic Windows 98 MS Paint experience. Built with React and p5.js, it features a retro UI with a title bar, menu bar, drawing toolbar, color palette, and status bar — all rendered with the [98.css](https://jdan.github.io/98.css/) design system.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Drawing canvas powered by p5.js
+- Classic Windows 98 UI (title bar, menu bar, toolbar, status bar, start bar)
+- Color palette with RYB color support via [rybitten](https://github.com/meodai/rybitten)
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Prerequisites:** Node.js (v18+) and npm
 
-## Expanding the ESLint configuration
+```bash
+# Install dependencies
+npm install
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Start the development server
+npm run dev
+```
+
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Other Scripts
+
+```bash
+npm run build    # Build for production
+npm run preview  # Preview the production build
+npm run lint     # Run ESLint
+```
+
+## Tech Stack
+
+- [React 19](https://react.dev)
+- [Vite](https://vite.dev)
+- [p5.js](https://p5js.org) via react-p5
+- [98.css](https://jdan.github.io/98.css/) for Windows 98 styling
+- [rybitten](https://github.com/meodai/rybitten) for RYB color palette generation
