@@ -1,0 +1,73 @@
+@font-face {
+  font-family: "MS Sans Serif";
+  src:
+    url("./assets/fonts/ms_sans_serif.woff2") format("woff2"),
+    url("./assets/fonts/ms_sans_serif.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MS Sans Serif";
+  src:
+    url("./assets/fonts/ms_sans_serif_bold.woff2") format("woff2"),
+    url("./assets/fonts/ms_sans_serif_bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --win-gray: #c0c0c0;
+  --win-dark: #808080;
+  --win-darker: #404040;
+  --win-white: #ffffff;
+  --win-blue: #000080;
+  --win-teal: #008080;
+  --win-font: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+html {
+  font-size: 11px;
+}
+
+body {
+  background: var(--win-teal);
+  font-family: var(--win-font);
+  font-size: 11px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+button,
+label,
+input,
+legend,
+textarea,
+select,
+option,
+table,
+ul.tree-view,
+.window,
+.title-bar,
+li[role="tab"] {
+  font-family: var(--win-font);
+}
