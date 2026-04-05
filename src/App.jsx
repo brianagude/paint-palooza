@@ -10,18 +10,17 @@ import "./App.css";
 export default function  App() {
 	return (
 		<>
-      <section className="paint-box-wrapper">
-        <div className="actions-bar">
-          <TitleBar/>
-          <MenuBar/>
-        </div>
-        <div className="paint-box">
+      <section className="paint-box-window window">
+        <TitleBar/>
+        <MenuBar/>
+        <div class="window-body">
           <Toolbar/>
           <PaintCanvas/>
+          <ColorPalette/>
         </div>
-        <ColorPalette/>
         <StatusBar/>
       </section>
+      
       <StartBar/>
 		</>
 	);

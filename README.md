@@ -7,6 +7,7 @@ A browser-based painting app styled after the classic Windows 98 MS Paint experi
 - Drawing canvas powered by p5.js
 - Classic Windows 98 UI (title bar, menu bar, toolbar, status bar, start bar)
 - Color palette with RYB color support via [rybitten](https://github.com/meodai/rybitten)
+- Icons are from [Old Windows Icons](https://oldwindowsicons.tumblr.com/tagged/windows%2095) and [Win 98 Icons](https://win98icons.alexmeub.com/)
 
 ## Getting Started
 
