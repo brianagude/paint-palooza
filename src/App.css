@@ -10,7 +10,7 @@ button.selected {
 
 .paint-box-window {
   width: 100%;
-  max-width: 80vw;
+  /* max-width: 80vw; */
 
   .window-body {
     display: grid;

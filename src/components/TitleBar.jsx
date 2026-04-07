@@ -4,7 +4,7 @@ export function TitleBar() {
   return <div className="title-bar">
     <div className="icon-title">
       <img src={paint} alt="Paint Brushes Icon" />
-      <p class="title-bar-text">untitled - Paint</p>
+      <p className="title-bar-text">untitled - Paint</p>
     </div>
     <div class="title-bar-controls">
       <button type="button" aria-label="Minimize"></button>
