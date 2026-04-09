@@ -1,22 +1,19 @@
-import { useState } from "react";
-import eraser from "../assets/icons/eraser.svg";
-import eyeDropper from "../assets/icons/eye-dropper.svg";
-import line from "../assets/icons/line.svg";
-import curvyLine from "../assets/icons/line-curvy.svg";
-import magnifyingGlass from "../assets/icons/magnifying-glass.svg";
-import paintBrush from "../assets/icons/paint-brush.svg";
-import paintBucket from "../assets/icons/paint-bucket.svg";
-import pencil from "../assets/icons/pencil.svg";
-import polygon from "../assets/icons/polygon.svg";
-import rectangle from "../assets/icons/rectangle.svg";
-import rectangleDotted from "../assets/icons/rectangle-dotted.svg";
-import sprayPaint from "../assets/icons/spray-paint.svg";
-import star from "../assets/icons/star.svg";
-import text from "../assets/icons/text.svg";
+import eraser from "@/assets/icons/eraser.svg";
+import eyeDropper from "@/assets/icons/eye-dropper.svg";
+import line from "@/assets/icons/line.svg";
+import curvyLine from "@/assets/icons/line-curvy.svg";
+import magnifyingGlass from "@/assets/icons/magnifying-glass.svg";
+import paintBrush from "@/assets/icons/paint-brush.svg";
+import paintBucket from "@/assets/icons/paint-bucket.svg";
+import pencil from "@/assets/icons/pencil.svg";
+import polygon from "@/assets/icons/polygon.svg";
+import rectangle from "@/assets/icons/rectangle.svg";
+import rectangleDotted from "@/assets/icons/rectangle-dotted.svg";
+import sprayPaint from "@/assets/icons/spray-paint.svg";
+import star from "@/assets/icons/star.svg";
+import text from "@/assets/icons/text.svg";
 
-export function Toolbar() {
-	const [selectedButton, setSelectedButton] = useState("paintBrush");
-
+export function Toolbar({ selectedTool, onSelectTool }) {
 	const tools = [
 		{ id: "star", src: star, alt: "Star Icon" },
 		{
@@ -49,8 +46,8 @@ export function Toolbar() {
 					<button
 						key={id}
 						type="button"
-						className={selectedButton === id ? "selected" : ""}
-						onClick={() => setSelectedButton(id)}
+						className={selectedTool === id ? "selected" : ""}
+						onClick={() => onSelectTool(id)}
 					>
 						<img src={src} alt={alt} />
 					</button>

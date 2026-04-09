@@ -1,4 +1,4 @@
-import paint from "../assets/icons/paint-98.svg";
+import paint from "@/assets/icons/paint-98.svg";
 
 export function TitleBar() {
   return <div className="title-bar">
