@@ -108,3 +108,27 @@ button.selected {
     }
   }
 }
+
+.color-palette {
+  display: flex;
+  gap: 2px;
+}
+
+.swatch-btn {
+  padding: 0;
+  aspect-ratio: 1/1;
+  min-width: 0;
+  min-height: 0;
+  width: 18px;
+  height: auto;
+  margin-right: 2px;
+}
+
+.swatch-btn:focus {
+  outline: none !important;
+}
+
+.swatch-rows {
+  display: grid;
+  grid-template-columns: repeat(14, 18px);
+}

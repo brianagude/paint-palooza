@@ -131,17 +131,28 @@ function sketch(p5) {
 /* --------- TODO: Rename this? --------- */
 export function PaintCanvas() {
 	const [selectedTool, setSelectedTool] = useState("pencil");
+	const [selectedSwatch, setSelectedSwatch] = useState([0, 0, 0]);
+	// const [selectedCube, setSelectedCube] = useState(RYB_ITTEN);
 
 	useEffect(() => {
 		toolState.active = selectedTool;
 	}, [selectedTool]);
+
+	useEffect(() => {
+		colorState.brushRyb = selectedSwatch;
+	}, [selectedSwatch]);
+
+	// useEffect(() => {
+	// 	// colorState.cube = selectedSwatch;
+	// 	// colorState.cube = selectedCube;
+	// }, [selectedSwatch]);
 
 	return (
 		<div className="window-body">
 			<Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
 			<P5Canvas sketch={sketch} />
 			{/* TODO: Push array of colors to color palette */}
-			<ColorPalette />
+			<ColorPalette cube={colorState.cube} onSelectSwatch={setSelectedSwatch} currentColor={selectedSwatch} />
 		</div>
 	);
 }
