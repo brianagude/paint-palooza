@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { ryb2rgb } from "rybitten";
+import { useEffect, useRef, useState } from "react";
 import { cubes, RYB_ITTEN } from "rybitten/cubes";
 import { StatusBar } from "../StatusBar";
 import { TitleBar } from "../TitleBar";
@@ -7,33 +6,25 @@ import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
 
-const colorState = {
-	cubeKey: "itten",
-	cube: RYB_ITTEN,
-	brushRyb: [0.85, 0.2, 0.15],
-};
-
-const toolState = {
-	active: "pencil",
-};
-
 export function PaintBox() {
+	// React state — drives UI re-renders (button highlights, swatch selection ring, etc.)
 	const [selectedTool, setSelectedTool] = useState("pencil");
 	const [selectedSwatch, setSelectedSwatch] = useState([0, 0, 0]);
-	// const [selectedCube, setSelectedCube] = useState(RYB_ITTEN);
+	// TODO: wire setCubeKey to a cube picker UI when that feature is built
+	const [cubeKey] = useState("itten");
 
-	useEffect(() => {
-		toolState.active = selectedTool;
-	}, [selectedTool]);
+	// Refs — stable mutable objects the p5 sketch reads at draw time.
+	// Changing .current does NOT trigger re-renders, so the sketch stays alive.
+	const toolRef = useRef({ active: "pencil" });
+	const colorRef = useRef({ cube: RYB_ITTEN, brushRyb: [0, 0, 0] });
 
-	useEffect(() => {
-		colorState.brushRyb = selectedSwatch;
-	}, [selectedSwatch]);
+	// Sync React state → refs after each render.
+	// The sketch always reads the latest value because refs are live objects.
+	useEffect(() => { toolRef.current.active = selectedTool; }, [selectedTool]);
+	useEffect(() => { colorRef.current.brushRyb = selectedSwatch; }, [selectedSwatch]);
+	// Note: colorRef.current.cube is managed inside PaintCanvas's cube useEffect
 
-	// useEffect(() => {
-	// 	// colorState.cube = selectedSwatch;
-	// 	// colorState.cube = selectedCube;
-	// }, [selectedSwatch]);
+	const cube = cubes[cubeKey];
 
 	return (
 		<section className="paint-box-window window">
@@ -45,17 +36,15 @@ export function PaintBox() {
 				<p>Image</p>
 				<p>Options</p>
 				<p>Help</p>
-				{/* Add the Color Space picker here, pass currently selected item to paint canvas */}
+				{/* TODO: Add cube picker here — pass setCubeKey */}
 			</div>
 			<div className="window-body">
 				<Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
 
-				{/* PaintCanvas controls toolbar, canvas, and color palette */}
-				<PaintCanvas toolState={toolState} colorState={colorState} /> 
+				<PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
 
-				{/* TODO: Push array of colors to color palette */}
 				<ColorPalette
-					cube={colorState.cube}
+					cube={cube}
 					onSelectSwatch={setSelectedSwatch}
 					currentColor={selectedSwatch}
 				/>
