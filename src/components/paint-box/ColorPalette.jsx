@@ -1,7 +1,5 @@
 import { ryb2rgb } from 'rybitten';
 
-// const [r0, g0, b0] = ryb2rgb([x, y, z], { cube });
-
 export function ColorPalette({cube, onSelectSwatch, currentColor}) {
   const PALETTE_RYB = [
     [0, 0, 0],

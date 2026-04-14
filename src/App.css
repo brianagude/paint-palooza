@@ -9,7 +9,11 @@ button.selected {
 }
 
 .paint-box-window {
-  width: 100%;
+  position: fixed;
+  top: 20%;
+  left: 30%;
+
+  width: 600px;
   /* max-width: 80vw; */
 
   .window-body {
