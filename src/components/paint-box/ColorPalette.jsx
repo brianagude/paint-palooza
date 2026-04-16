@@ -43,14 +43,14 @@ export function ColorPalette({cube, onSelectSwatch, currentColor}) {
       <button type="button" className="swatch-btn selected" style={{ background: currentBg }}/>
     </div>
     <div className="swatch-rows">
-      {PALETTE_RYB.map(([r, y, b]) => {
+      {PALETTE_RYB.map((c, i) => {
         return (
           <button
-            key={r+y+b}
+            key={`button-${c[0]}-${c[1]}-${c[2]}-${i}`}
             type="button"
             className="swatch-btn selected"
-            style={{ background: rybToRgbString([r, y, b]) }}
-            onClick={() => onSelectSwatch([r, y, b])}
+            style={{ background: rybToRgbString(c) }}
+            onClick={() => onSelectSwatch(c)}
           />
         );
       })}

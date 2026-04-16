@@ -48,6 +48,8 @@ html {
 
 body {
   background: var(--win-teal);
+  background-image: url("./assets/bugs-life-wallpaper.jpg");
+  background-position: center;
   font-family: var(--win-font);
   font-size: 11px;
 }

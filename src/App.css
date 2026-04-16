@@ -136,3 +136,61 @@ button.selected {
   display: grid;
   grid-template-columns: repeat(14, 18px);
 }
+
+/* Close */
+.window--closed,
+.window--minimized {
+  display: none;
+}
+
+/* Minimize: collapse everything below the title bar */
+/* .window--minimized .menu-bar,
+.window--minimized .window-body,
+.window--minimized .status-bar {
+  display: none;
+} */
+
+/* Maximize: fill the viewport (above the start bar) */
+.window--maximized {
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  width: 100vw !important;
+  height: calc(100vh - 24px) !important;
+  margin: 0 !important;
+}
+
+.app-btn {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  width: 75px;
+  height: 75px;
+}
+
+.app-btn div {
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.app-icon {
+  width: 32px;
+  height: auto;
+}
+
+.app-icon-arrow {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.app-title {
+  margin-top: 5px;
+  background: var(--win-teal);
+  width: 100%;
+}

@@ -40,7 +40,7 @@ export function StartBar() {
 	return (
 		<div className="start-bar window">
 			<div className="status-bar">
-				<div class="buttons">
+				<div className="buttons">
 					<button type="button" className="start-btn">
 						<img src={recurse} alt="Recurse Center Logo" />
 						Start
@@ -50,7 +50,7 @@ export function StartBar() {
 						untitled - Paint
 					</button>
 				</div>
-				<div class="status-field-border">
+				<div className="status-field-border">
           {icons.map(({ id, src, alt }) => (
 						<img key={id} src={src} alt={alt} />
 				  ))}

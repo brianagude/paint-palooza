@@ -40,9 +40,7 @@ export function PaintBox() {
 			</div>
 			<div className="window-body">
 				<Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
-
 				<PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
-
 				<ColorPalette
 					cube={cube}
 					onSelectSwatch={setSelectedSwatch}
