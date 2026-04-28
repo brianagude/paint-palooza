@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { cubes, RYB_ITTEN } from "rybitten/cubes";
-import { StatusBar } from "../StatusBar";
-import { TitleBar } from "../TitleBar";
 import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
