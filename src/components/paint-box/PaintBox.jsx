@@ -3,6 +3,8 @@ import { cubes, RYB_ITTEN } from "rybitten/cubes";
 import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
+import { StatusBar } from "../StatusBar";
+import { MenuBar } from "../MenuBar";
 
 export function PaintBox() {
   // React state — drives UI re-renders (button highlights, swatch selection ring, etc.)
@@ -30,13 +32,32 @@ export function PaintBox() {
 
   return (
     <>
-      <Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
-      <PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
-      <ColorPalette
-        cube={cube}
-        onSelectSwatch={setSelectedSwatch}
-        currentColor={selectedSwatch}
-      />
+{/* 
+      <MenuBar>
+        <MenuBarGroup>
+          <MenuBarItem>File</MenuBarItem>
+          <MenuBarItem>Edit</MenuBarItem>
+          <MenuBarItem>View</MenuBarItem>
+          <MenuBarItem>Image</MenuBarItem>
+          <MenuBarItem>Options</MenuBarItem>
+          <MenuBarItem>Help</MenuBarItem>
+        </MenuBarGroup>
+      </MenuBar> */}
+      
+      <div className="window-body">
+          
+        <Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
+        <PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
+        <ColorPalette
+          cube={cube}
+          onSelectSwatch={setSelectedSwatch}
+          currentColor={selectedSwatch}
+        />
+        
+      </div>
+
+      <StatusBar />
+      
     </>
   );
 }

@@ -14,10 +14,17 @@ let apps = [
     minimized: false,
     maximized: false,
     comp: PaintBox,
+    // menubar: {
+    //   File: ['New', 'Open', 'Save', 'Save As', 'Exit'],
+    //   Edit: ['Undo', 'Cut', 'Copy', 'Paste', 'Clear', 'Select All'],
+    //   View: ['Zoom In', 'Zoom Out', 'Default Zoom', 'Full Screen'],
+    //   Image: ['Flip/Rotate', 'Stretch/Skew', 'Invert Colors', 'Attributes'],
+    //   Options: ['Edit Colors'],
+    //   Help: ['View Help', 'About Paint'],
+    // }
     //windowSize, windowPosition, etc. could go here too
   },
 ];
-
 
 export default function App() {
 	const [currentApps, setCurrentApps] = useState(apps);

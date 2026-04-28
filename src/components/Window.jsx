@@ -39,20 +39,9 @@ export function Window({ app, onUpdate }) {
               </div>
             </div>
 
-            <div className="menu-bar">
-              <p>File</p>
-              <p>Edit</p>
-              <p>View</p>
-              <p>Image</p>
-              <p>Options</p>
-              <p>Help</p>
-              {/* TODO: Add cube picker here — pass setCubeKey */}
-            </div>
-            
-            <div className="window-body">
-              <app.comp />
-            </div>
-            <StatusBar />
+
+            <app.comp />
+
         </section>
 
   );
