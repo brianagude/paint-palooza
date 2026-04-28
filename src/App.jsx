@@ -1,6 +1,7 @@
 import arrow from "@/assets/icons/app-arrow.jpg";
 import paint from "@/assets/icons/paint-98.svg";
 import { PaintBox } from "./components/paint-box/PaintBox";
+import { Window } from "./components/Window";
 import { StartBar } from "./components/StartBar";
 import { useState } from "react";
 import "./App.css";
@@ -35,6 +36,7 @@ function handleAppUpdate(name, changes) {
 	return (
     <div>
       <div className="app-icons">
+        {/* Desktop Icons */}
         {currentApps.map((app) => {
           console.log('current app: ', app);
           return (
@@ -56,13 +58,15 @@ function handleAppUpdate(name, changes) {
           );
         })}
       </div>
-
+      
+      {/* Windows */}
       {currentApps.map((app) =>
         app.open ? (
-          <app.comp key={app.name} app={app} onUpdate={handleAppUpdate} />
+          <Window key={`window - ${app.name}`} app={app} onUpdate={handleAppUpdate} />
         ) : null,
       )}
 
+      {/* Start Bar */}
       <StartBar onUpdate={handleAppUpdate} apps={currentApps} />
     </div>
   );

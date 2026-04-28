@@ -6,7 +6,7 @@ import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
 
-export function PaintBox({ app, onUpdate }) {
+export function PaintBox() {
   // React state — drives UI re-renders (button highlights, swatch selection ring, etc.)
   const [selectedTool, setSelectedTool] = useState('pencil');
   const [selectedSwatch, setSelectedSwatch] = useState([0, 0, 0]);
@@ -31,29 +31,14 @@ export function PaintBox({ app, onUpdate }) {
   const cube = cubes[cubeKey];
 
   return (
-    <section
-      className={`paint-box-window window ${app.maximized ? 'window--maximized' : ''} ${app.minimized ? 'window--minimized' : ''}`}
-    >
-      <TitleBar app={app} onUpdate={onUpdate} />
-      <div className="menu-bar">
-        <p>File</p>
-        <p>Edit</p>
-        <p>View</p>
-        <p>Image</p>
-        <p>Options</p>
-        <p>Help</p>
-        {/* TODO: Add cube picker here — pass setCubeKey */}
-      </div>
-      <div className="window-body">
-        <Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
-        <PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
-        <ColorPalette
-          cube={cube}
-          onSelectSwatch={setSelectedSwatch}
-          currentColor={selectedSwatch}
-        />
-      </div>
-      <StatusBar />
-    </section>
+    <>
+      <Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
+      <PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
+      <ColorPalette
+        cube={cube}
+        onSelectSwatch={setSelectedSwatch}
+        currentColor={selectedSwatch}
+      />
+    </>
   );
 }
