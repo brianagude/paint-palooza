@@ -1,4 +1,4 @@
-import { useOS } from './OSContext';
+import { useOS } from './OS';
 import { Window } from "./Window";
 
 export function WindowManager() {

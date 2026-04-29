@@ -1,4 +1,4 @@
-import {useOS} from "./OSContext"
+import {useOS} from "./OS"
 import arrow from "@/assets/icons/app-arrow.jpg";
 import "../App.css";
 

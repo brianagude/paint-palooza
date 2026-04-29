@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useOS } from "./OSContext";
+import { useOS } from "./OS";
 
 import crayonPaper from "../assets/icons/crayon-paper.svg";
 import flowers from "../assets/icons/flowers.svg";

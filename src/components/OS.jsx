@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const OSContext = createContext(null);
 
-export function OSProvider({ apps, children }) {
+export function OS({ apps, children }) {
   const [registeredApps, setAppsMap] = useState(new Map());
   const [openWindows, setOpenWindows] = useState(new Map());
 
