@@ -3,23 +3,15 @@ import { createContext, useContext, useEffect, useState } from "react";
 const OSContext = createContext(null);
 
 export function OSProvider({ apps, children }) {
-  const [appsMap, setAppsMap] = useState(new Map());
+  const [registeredApps, setAppsMap] = useState(new Map());
   const [openWindows, setOpenWindows] = useState(new Map());
-
-  function registeredApps() {
-    return appsMap;
-  }
 
   function registerApp(manifest) {
     setAppsMap(prev => new Map(prev.set(manifest.id, manifest)));
   }
 
-  function windows() {
-    return openWindows;
-  }
-
   function launch(appId) {
-    const manifest = appsMap.get(appId);
+    const manifest = registeredApps.get(appId);
 
     const instanceId = crypto.randomUUID();
     const newWindow = {
@@ -95,7 +87,7 @@ export function OSProvider({ apps, children }) {
 
   return (
     <OSContext.Provider value={{ 
-      registeredApps, registerApp, windows,
+      registeredApps, registerApp, openWindows,
       launch, minimize, maximize, close, restore, focus
       }}>
       {children}

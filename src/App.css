@@ -137,19 +137,6 @@ button.selected {
   grid-template-columns: repeat(14, 18px);
 }
 
-/* Close */
-.window--closed,
-.window--minimized {
-  display: none;
-}
-
-/* Minimize: collapse everything below the title bar */
-/* .window--minimized .menu-bar,
-.window--minimized .window-body,
-.window--minimized .status-bar {
-  display: none;
-} */
-
 /* Maximize: fill the viewport (above the start bar) */
 .window--maximized {
   position: fixed !important;

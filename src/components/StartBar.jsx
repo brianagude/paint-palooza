@@ -12,7 +12,7 @@ import sound from "../assets/icons/sound.svg";
 import umbrella from "../assets/icons/umbrella.svg";
 
 export function StartBar() {
-  const { windows, minimize, restore, focus } = useOS();
+  const { openWindows, minimize, restore, focus } = useOS();
   const [time, setTime] = useState('');
 
   useEffect(() => {
@@ -52,9 +52,9 @@ export function StartBar() {
   }
 
   function TaskButton({instanceId}) {
-    const { windows, registeredApps } = useOS();
-    const window = windows().get(instanceId);
-    const app = registeredApps().get(window.appId);
+    const { openWindows, registeredApps } = useOS();
+    const window = openWindows.get(instanceId);
+    const app = registeredApps.get(window.appId);
 
     return (
       <button
@@ -77,8 +77,8 @@ export function StartBar() {
             Start
           </button>
 
-          {[...windows().keys()].map(instanceId => 
-            <TaskButton instanceId={instanceId} />
+          {[...openWindows].map(([id,w]) => 
+            <TaskButton instanceId={id} />
           )}
         </div>
 

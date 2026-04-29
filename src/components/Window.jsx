@@ -2,10 +2,10 @@ import paint from "@/assets/icons/paint-98.svg";
 import { useOS } from "./OSContext";
 
 export function Window({ instanceId }) {
-  const {minimize, maximize, close, windows, registeredApps} = useOS();
+  const {minimize, maximize, close, openWindows, registeredApps} = useOS();
 
-  const window = windows().get(instanceId);
-  const app = registeredApps().get(window.appId);
+  const window = openWindows.get(instanceId);
+  const app = registeredApps.get(window.appId);
 
   return (
     <section className={`paint-box-window window ${window.isMaximized ? 'window--maximized' : ''}`}>
