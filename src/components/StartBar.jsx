@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
+import { useOS } from "./OSContext";
+
 import crayonPaper from "../assets/icons/crayon-paper.svg";
 import flowers from "../assets/icons/flowers.svg";
 import globe from "../assets/icons/globe.svg";
 import music from "../assets/icons/music-95.svg";
-// import paint from "../assets/icons/paint-98.svg";
+
 import recurse from "../assets/icons/recurse-logo.svg";
 import smile from "../assets/icons/smile.svg";
 import sound from "../assets/icons/sound.svg";
 import umbrella from "../assets/icons/umbrella.svg";
 
-export function StartBar({ apps, onUpdate }) {
+export function StartBar() {
+  const { windows, minimize, restore, focus } = useOS();
   const [time, setTime] = useState('');
 
   useEffect(() => {
@@ -37,6 +40,34 @@ export function StartBar({ apps, onUpdate }) {
     { id: 'umbrella', src: umbrella, alt: 'Umbrella Icon' },
   ];
 
+  function handleClick(instanceId, window) {
+    // onUpdate(app.name, { minimized: !app.minimized })
+    if (window.isMinimized) {
+      restore(instanceId);
+    } else if (window.isFocused) {
+      minimize(instanceId);
+    } else {
+      focus(instanceId);
+    }
+  }
+
+  function TaskButton({instanceId}) {
+    const { windows, registeredApps } = useOS();
+    const window = windows().get(instanceId);
+    const app = registeredApps().get(window.appId);
+
+    return (
+      <button
+        type="button"
+        className={`window-btn ${window.isFocused && 'selected'}`}
+        onClick={() => handleClick(instanceId, window)}
+      >
+        <img src={app.icon} alt={`${app.name} Icon`} />
+        untitled - {app.name}
+      </button>
+    )
+  }
+
   return (
     <div className="start-bar window">
       <div className="status-bar">
@@ -46,20 +77,8 @@ export function StartBar({ apps, onUpdate }) {
             Start
           </button>
 
-          {apps.map(
-            (app) =>
-              app.open && (
-                <button
-                  type="button"
-									className={`window-btn ${!app.minimized && 'selected'}`}
-                  onClick={() =>
-                    onUpdate(app.name, { minimized: !app.minimized })
-                  }
-                >
-                  <img src={app.icon} alt={`${app.name} Icon`} />
-                  untitled - {app.name}
-                </button>
-              ),
+          {[...windows().keys()].map(instanceId => 
+            <TaskButton instanceId={instanceId} />
           )}
         </div>
 
