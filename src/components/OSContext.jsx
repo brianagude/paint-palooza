@@ -1,8 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const OSContext = createContext(null);
 
-export function OSProvider({ children }) {
+export function OSProvider({ apps, children }) {
   const [appsMap, setAppsMap] = useState(new Map());
   const [openWindows, setOpenWindows] = useState(new Map());
 
@@ -88,6 +88,10 @@ export function OSProvider({ children }) {
       }))
     );
   }
+  
+  useEffect(() => {
+    apps.forEach(registerApp);
+  }, [])
 
   return (
     <OSContext.Provider value={{ 

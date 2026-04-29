@@ -4,7 +4,6 @@ import { useOS } from "./OSContext";
 export function Window({ instanceId }) {
   const {minimize, maximize, close, windows, registeredApps} = useOS();
 
-
   const window = windows().get(instanceId);
   const app = registeredApps().get(window.appId);
 
