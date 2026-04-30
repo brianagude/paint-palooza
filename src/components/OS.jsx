@@ -4,7 +4,7 @@ const OSContext = createContext(null);
 
 export function OS({ apps, children }) {
   const [registeredApps, setAppsMap] = useState(new Map());
-  const [openWindows, setOpenWindows] = useState(new Map());
+  const [openWindows, setOpenWindows] = useState(new Array());
 
   function registerApp(manifest) {
     setAppsMap(prev => new Map(prev.set(manifest.id, manifest)));
@@ -12,11 +12,14 @@ export function OS({ apps, children }) {
 
   function launch(appId) {
     const manifest = registeredApps.get(appId);
+    const timestamp = Date.now();
 
-    const instanceId = crypto.randomUUID();
+    const id = crypto.randomUUID();
     const newWindow = {
       appId: appId,
-      title: manifest.name,
+      launchTime: timestamp,
+      instanceId: id,
+      title: id,
       isMinimized: false,
       isMaximized: false,
       isFocused: true,
@@ -24,61 +27,57 @@ export function OS({ apps, children }) {
       size: manifest.defaultSize
     }
 
-    setOpenWindows(prev => new Map(prev.set(instanceId, newWindow)));
-
-    return instanceId;
+    setOpenWindows(prev => [...prev, newWindow]);
+    focus(newWindow.instanceId);//TODO: This is an async race condition
   }
 
   function close(instanceId) {
-    setOpenWindows(prev => {
-      prev.delete(instanceId);
-      return new Map(prev);
-    });
+    setOpenWindows(prev => 
+      prev.filter(w => w.instanceId != instanceId)
+    );
   }
 
   function minimize(instanceId) {
-    setOpenWindows(prev => 
-      new Map(prev.set(instanceId, { 
-        ...prev.get(instanceId), 
-        isMinimized: true,
-        isFocused: false }
-      )
-    ));
+    setOpenWindows(prev => {
+      const mod = prev.map(w => w.instanceId === instanceId
+        ? {...w, isMinimized: true, isFocused: false}
+        : w)  
+      return mod;
+    });
+
+    let next = openWindows.filter(w => !w.isMinimized).at(-1);
+    if (next) focus(next.instanceId);
   }
 
   function restore(instanceId) {
     setOpenWindows(prev => 
-      new Map(prev.set(instanceId, { 
-        ...prev.get(instanceId), 
-        isMinimized: false,
-        isFocused: true }
-      )
-    ));
+      prev.map(w => w.instanceId === instanceId
+        ? {...w, isMinimized: false}
+        : w)
+    );
+    focus(instanceId); //TODO: This is an async race condition
   }
 
   function focus(instanceId) {
     setOpenWindows(prev => {
-      const updated = new Map(prev);
-      const targetWindow = updated.get(instanceId);
-      if (targetWindow) {
-        // Unfocus all windows
-        for (let [id, win] of updated) {
-          updated.set(id, { ...win, isFocused: false });
-        }
-        // Focus the target window
-        updated.set(instanceId, { ...targetWindow, isFocused: true });
-      }
-      return updated;
+      const targetIndex = prev.findIndex(w => w.instanceId === instanceId);
+      const targetWindow = prev[targetIndex];
+      const rest = prev.filter(w => w.instanceId != instanceId).map(w => ({...w, isFocused: false}));
+
+      return [
+        ...rest,
+        {...targetWindow, isFocused: true}
+      ]
     });
   }
 
   function maximize(instanceId) {
     setOpenWindows(prev => 
-      new Map(prev.set(instanceId, { 
-        ...prev.get(instanceId), 
-        isMaximized: !prev.get(instanceId).isMaximized
-      }))
+      prev.map(w => w.instanceId === instanceId
+        ? {...w, isMaximized: !w.isMaximized}
+        : w)
     );
+    focus(instanceId);//TODO: This is an async race condition
   }
   
   useEffect(() => {

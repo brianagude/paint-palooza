@@ -7,8 +7,9 @@ const WindowContext = createContext(null);
 
 export function Window({ instanceId }) {
   let {minimize: minimizeWindow, maximize: maximizeWindow, restore: restoreWindow, focus: focusWindow, close: closeWindow, openWindows, registeredApps} = useOS();
-
-  const window = openWindows.get(instanceId);
+  
+  const windowIndex = openWindows.findIndex( w => w.instanceId === instanceId );
+  const window = openWindows[windowIndex];
   const app = registeredApps.get(window.appId);
 
   const minimize = () => minimizeWindow(instanceId);
@@ -24,7 +25,11 @@ export function Window({ instanceId }) {
 
   const position = window.position;
   const size = window.size;
+  const zIndex = windowIndex;
 
+  const style = isMaximized
+  ? { position: 'fixed', top: 0, left: 0, width: '100%', height: 'calc(100vh - 28px)', zIndex }
+  : { position: 'fixed', top: position.y, left: position.x, width: size.width, height: size.height, zIndex }
 
   return (
     <WindowContext.Provider value={{
@@ -38,9 +43,9 @@ export function Window({ instanceId }) {
             <p className="title-bar-text">{window.title}</p>
           </div>
           <div className="title-bar-controls">
-            <button type="button" aria-label="Minimize" onClick={() => minimize(instanceId)}></button>
-            <button type="button" aria-label="Maximize" onClick={() => maximize(instanceId)}></button>
-            <button type="button" aria-label="Close" onClick={() => close(instanceId)}></button>
+            <button type="button" aria-label="Minimize" onClick={minimize}></button>
+            <button type="button" aria-label="Maximize" onClick={maximize}></button>
+            <button type="button" aria-label="Close" onClick={close}></button>
           </div>
         </div>
 
@@ -54,7 +59,5 @@ export function useWindow() {
   const c = useContext(WindowContext);
   if (!c) throw new Error("Trying to use context outside provider.");
 
-  return {
-    c
-  };
+  return c;
 }

@@ -53,7 +53,7 @@ export function StartBar() {
 
   function TaskButton({instanceId}) {
     const { openWindows, registeredApps } = useOS();
-    const window = openWindows.get(instanceId);
+    const window = openWindows.find(w => w.instanceId === instanceId);
     const app = registeredApps.get(window.appId);
 
     return (
@@ -63,7 +63,7 @@ export function StartBar() {
         onClick={() => handleClick(instanceId, window)}
       >
         <img src={app.icon} alt={`${app.name} Icon`} />
-        untitled - {app.name}
+        {window.title}
       </button>
     )
   }
@@ -77,8 +77,8 @@ export function StartBar() {
             Start
           </button>
 
-          {[...openWindows].map(([id,w]) => 
-            <TaskButton instanceId={id} />
+          {openWindows.sort((a,b) => a.launchTime - b.launchTime).map(w => 
+            <TaskButton instanceId={w.instanceId} />
           )}
         </div>
 
