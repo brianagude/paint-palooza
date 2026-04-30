@@ -1,6 +1,7 @@
 import { ryb2rgb } from 'rybitten';
+import { cubes } from 'rybitten/cubes';
 
-export function ColorPalette({cube, onSelectSwatch, currentColor}) {
+export function ColorPalette({cubeKey, onSelectSwatch, currentColor}) {
   const PALETTE_RYB = [
     [0, 0, 0],
     [1, 0, 0],
@@ -33,7 +34,7 @@ export function ColorPalette({cube, onSelectSwatch, currentColor}) {
   ];
 
   function rybToRgbString([r, y, b]) {
-    const [cr, cg, cb] = ryb2rgb([r, y, b], { cube });
+    const [cr, cg, cb] = ryb2rgb([r, y, b], { cube: cubes.get(cubeKey).cube });
     return `rgb(${Math.round(cr * 255)}, ${Math.round(cg * 255)}, ${Math.round(cb * 255)})`;
   }
   const currentBg = rybToRgbString(currentColor);

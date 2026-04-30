@@ -147,6 +147,18 @@ button.selected {
   margin: 0 !important;
 }
 
+button.remove-styling {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  width: fit-content;
+  height: fit-content;
+  min-width: 0;
+  min-height: 0;
+}
+
 .app-btn {
   background: none;
   border: none;
@@ -180,4 +192,12 @@ button.selected {
   margin-top: 5px;
   background: var(--win-teal);
   width: 100%;
+}
+
+
+/* menu styling */
+.menu-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
 }

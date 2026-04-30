@@ -1,17 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { cubes, RYB_ITTEN } from "rybitten/cubes";
 import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
 import { StatusBar } from "../StatusBar";
-import { MenuBar } from "../MenuBar";
+import { MenuBar, MenuBarGroup, MenuBarItem } from "../MenuBar";
+
+const PaintBoxContext = createContext(null);
 
 export function PaintBox() {
   // React state — drives UI re-renders (button highlights, swatch selection ring, etc.)
   const [selectedTool, setSelectedTool] = useState('pencil');
   const [selectedSwatch, setSelectedSwatch] = useState([0, 0, 0]);
+
   // TODO: wire setCubeKey to a cube picker UI when that feature is built
-  const [cubeKey] = useState('itten');
+  const [cubeKey, setCubeKey] = useState('itten');
 
   // Refs — stable mutable objects the p5 sketch reads at draw time.
   // Changing .current does NOT trigger re-renders, so the sketch stays alive.
@@ -28,36 +31,40 @@ export function PaintBox() {
   }, [selectedSwatch]);
   // Note: colorRef.current.cube is managed inside PaintCanvas's cube useEffect
 
-  const cube = cubes[cubeKey];
-
   return (
-    <>
-{/* 
+    <PaintBoxContext.Provider
+      value={{
+        setCubeKey,
+      }}
+    >
       <MenuBar>
-        <MenuBarGroup>
-          <MenuBarItem>File</MenuBarItem>
-          <MenuBarItem>Edit</MenuBarItem>
-          <MenuBarItem>View</MenuBarItem>
-          <MenuBarItem>Image</MenuBarItem>
-          <MenuBarItem>Options</MenuBarItem>
-          <MenuBarItem>Help</MenuBarItem>
+        <MenuBarGroup title="Options">
+          {
+            [...cubes].slice(0,4).map(([key, cube]) => (
+              <MenuBarItem key={key} action={() => setCubeKey(key)} title={cube.title}/>
+            ))
+          }
         </MenuBarGroup>
-      </MenuBar> */}
-      
+      </MenuBar>
+
       <div className="window-body">
-          
         <Toolbar selectedTool={selectedTool} onSelectTool={setSelectedTool} />
-        <PaintCanvas toolRef={toolRef} colorRef={colorRef} cube={cube} />
+        <PaintCanvas toolRef={toolRef} colorRef={colorRef} cubeKey={cubeKey} />
         <ColorPalette
-          cube={cube}
+          cubeKey={cubeKey}
           onSelectSwatch={setSelectedSwatch}
           currentColor={selectedSwatch}
         />
-        
       </div>
 
       <StatusBar />
-      
-    </>
+    </PaintBoxContext.Provider>
   );
+}
+
+export function usePaint() {
+  const c = useContext(PaintBoxContext);
+  if (!c) throw new Error("Trying to use context outside provider.");
+
+  return c;
 }

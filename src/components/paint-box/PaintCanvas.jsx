@@ -1,6 +1,7 @@
 import { P5Canvas } from "@p5-wrapper/react";
 import { useEffect, useRef, useState } from "react";
 import { ryb2rgb } from "rybitten";
+import { cubes } from "rybitten/cubes";
 
 // Module-level constants and helpers — defined once, never recreated.
 // This matters for the React Compiler: functions defined inside a component
@@ -37,7 +38,7 @@ function rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef) {
 }
 
 /* --------- TODO: Rename this? --------- */
-export function PaintCanvas({ toolRef, colorRef, cube }) {
+export function PaintCanvas({ toolRef, colorRef, cubeKey }) {
 	// Internal canvas layers — p5.Graphics objects, never exposed outside this component
 	const rgbLayerRef = useRef(null);
 	const rybDataLayerRef = useRef(null);
@@ -46,9 +47,9 @@ export function PaintCanvas({ toolRef, colorRef, cube }) {
 	// Both steps are in the same effect so rebuildRgbFromRybData always reads the new cube.
 	// cube is a new object reference whenever cubeKey changes in PaintBox.
 	useEffect(() => {
-		colorRef.current.cube = cube;
+		colorRef.current.cube = cubes.get(cubeKey).cube;
 		rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
-	}, [cube, colorRef]);
+	}, [cubeKey, colorRef]);
 
 	// useState with a lazy initializer runs exactly once on first render.
 	// This gives P5Canvas a permanently stable sketch reference — it will never
