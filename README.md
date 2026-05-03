@@ -1,10 +1,10 @@
 # Paint Palooza
 
-(Still in progress!)
+(Still in progress! This readme is written with our end goal in mind.)
 
 A browser-based Windows 98-style desktop environment with a fully functional MS Paint clone at its core. Built with React and p5.js, it renders a retro desktop complete with draggable windows, a taskbar, minimize/maximize/close controls, and a color palette powered by RYB color theory.
 
-This project is the successor to [color-palooza](https://github.com/brianagude/color-palooza) — a collaborative effort between [@brianagude](https://github.com/brianagude) and [@abettercoach](https://github.com/abettercoach), two engineers who met at [Recurse Center](https://github.com/recursecenter) and have been pair programming and trading off the driver seat week over week since the beginning.
+This project is the successor to [color-palooza](https://github.com/brianagude/color-palooza) — a collaborative effort between [myself](https://github.com/brianagude) and [@abettercoach](https://github.com/abettercoach), whom I met at [Recurse Center](https://github.com/recursecenter).
 
 ## What it looks like
 
