@@ -2,12 +2,12 @@ import { P5Canvas } from "@p5-wrapper/react";
 import { useEffect, useRef, useState } from "react";
 import { ryb2rgb } from "rybitten";
 import { cubes } from "rybitten/cubes";
-import { usePaint } from "./PaintBox"
+import { usePaint } from "@/context/PaintBoxContext";
 
 const W = 450;
 const H = 280;
 const PENCIL_WEIGHT = 2.25;
-const ERASER_DIAMETER = 5;
+const ERASER_DIAMETER = 10;
 
 function pointerInCanvas(x, y) {
 	return x >= 0 && y >= 0 && x < W && y < H;

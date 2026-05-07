@@ -12,7 +12,7 @@ import rectangleDotted from "@/assets/icons/rectangle-dotted.svg";
 import sprayPaint from "@/assets/icons/spray-paint.svg";
 import star from "@/assets/icons/star.svg";
 import text from "@/assets/icons/text.svg";
-import { usePaint } from "./PaintBox"
+import { usePaint } from "@/context/PaintBoxContext";
 
 export function Toolbar() {
 	const { selectedTool, setSelectedTool } = usePaint();

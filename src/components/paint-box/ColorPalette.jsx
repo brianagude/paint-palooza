@@ -1,6 +1,6 @@
 import { ryb2rgb } from 'rybitten';
 import { cubes } from 'rybitten/cubes';
-import { usePaint } from "./PaintBox"
+import { usePaint } from "@/context/PaintBoxContext";
 
 export function ColorPalette() {
   const { colorSpace, foregroundColor, setForegroundColor, backgroundColor, setBackgroundColor } = usePaint();

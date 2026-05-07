@@ -1,12 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import { cubes } from "rybitten/cubes";
+import { PaintBoxContext } from "@/context/PaintBoxContext";
 import { MenuBar, MenuBarGroup, MenuBarItem } from "../MenuBar";
 import { StatusBar } from "../StatusBar";
 import { ColorPalette } from "./ColorPalette";
 import { PaintCanvas } from "./PaintCanvas";
 import { Toolbar } from "./Toolbar";
-
-const PaintBoxContext = createContext(null);
 
 export function PaintBox() {
 	const [selectedTool, setSelectedTool] = useState("pencil");
@@ -24,7 +23,7 @@ export function PaintBox() {
 				backgroundColor,
 				setBackgroundColor,
 				colorSpace,
-				setColorSpace
+				setColorSpace,
 			}}
 		>
 			<MenuBar>
@@ -47,11 +46,4 @@ export function PaintBox() {
 			<StatusBar />
 		</PaintBoxContext.Provider>
 	);
-}
-
-export function usePaint() {
-	const c = useContext(PaintBoxContext);
-	if (!c) throw new Error("Trying to use context outside provider.");
-
-	return c;
 }
