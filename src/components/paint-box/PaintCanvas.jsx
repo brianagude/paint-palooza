@@ -2,22 +2,17 @@ import { P5Canvas } from "@p5-wrapper/react";
 import { useEffect, useRef, useState } from "react";
 import { ryb2rgb } from "rybitten";
 import { cubes } from "rybitten/cubes";
-
-// Module-level constants and helpers — defined once, never recreated.
-// This matters for the React Compiler: functions defined inside a component
-// body are recreated every render and become unstable hook dependencies.
-// By living here, these are stable and the Compiler can auto-memoize correctly.
+import { usePaint } from "@/context/PaintBoxContext";
 
 const W = 450;
 const H = 280;
 const PENCIL_WEIGHT = 2.25;
+const ERASER_DIAMETER = 10;
 
 function pointerInCanvas(x, y) {
 	return x >= 0 && y >= 0 && x < W && y < H;
 }
 
-// Takes refs as arguments so it can be called from both the sketch (imperative)
-// and from useEffect (declarative), always reading the latest values via .current.
 function rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef) {
 	if (!rgbLayerRef.current || !rybDataLayerRef.current) return;
 	rgbLayerRef.current.loadPixels();
@@ -37,39 +32,56 @@ function rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef) {
 	rgbLayerRef.current.updatePixels();
 }
 
-/* --------- TODO: Rename this? --------- */
-export function PaintCanvas({ toolRef, colorRef, cubeKey }) {
-	// Internal canvas layers — p5.Graphics objects, never exposed outside this component
+
+export function PaintCanvas() {
+	const { selectedTool, foregroundColor, backgroundColor, colorSpace } = usePaint();
+	
 	const rgbLayerRef = useRef(null);
 	const rybDataLayerRef = useRef(null);
-
-	// When the cube prop changes: update colorRef and rebuild the RGB display layer.
-	// Both steps are in the same effect so rebuildRgbFromRybData always reads the new cube.
-	// cube is a new object reference whenever cubeKey changes in PaintBox.
+	const toolRef = useRef(selectedTool);
+	const colorRef = useRef({
+    foreground: foregroundColor,
+    background: backgroundColor,
+    cube: cubes.get(colorSpace).cube
+	});
+	
 	useEffect(() => {
-		colorRef.current.cube = cubes.get(cubeKey).cube;
+		toolRef.current = selectedTool
+	}, [selectedTool]);
+	
+	useEffect(() => {
+		colorRef.current.foreground = foregroundColor
+		colorRef.current.background = backgroundColor
+	}, [foregroundColor, backgroundColor]);
+	
+	useEffect(() => {
+		colorRef.current.cube = cubes.get(colorSpace).cube
 		rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
-	}, [cubeKey, colorRef]);
-
-	// useState with a lazy initializer runs exactly once on first render.
-	// This gives P5Canvas a permanently stable sketch reference — it will never
-	// see a new function reference on re-render, so it never destroys the canvas.
-	//
-	// Why not useCallback(fn, [])? React 19's Compiler conflicts with manual
-	// useCallback whose inferred deps don't match the declared ones, and opts the
-	// entire component out of auto-optimization. useState avoids that conflict entirely.
-	//
-	// The sketch closes over the ref objects (not their .current values), so it
-	// always reads the latest color, tool, and layer data at draw time.
+	}, [colorSpace]);
+	
 	const [sketch] = useState(() => (p5) => {
 		function stampInk(x, y, diameter) {
 			rybDataLayerRef.current.push();
 			rybDataLayerRef.current.colorMode(p5.RGB, 255);
 			rybDataLayerRef.current.noStroke();
 			rybDataLayerRef.current.fill(
-				colorRef.current.brushRyb[0] * 255,
-				colorRef.current.brushRyb[1] * 255,
-				colorRef.current.brushRyb[2] * 255,
+				colorRef.current.foreground[0] * 255,
+				colorRef.current.foreground[1] * 255,
+				colorRef.current.foreground[2] * 255,
+				255,
+			);
+			rybDataLayerRef.current.circle(x, y, diameter);
+			rybDataLayerRef.current.pop();
+		}
+
+		function stampErase(x, y, diameter) {
+			rybDataLayerRef.current.push();
+			rybDataLayerRef.current.colorMode(p5.RGB, 255);
+			rybDataLayerRef.current.noStroke();
+			rybDataLayerRef.current.fill(
+				colorRef.current.background[0] * 255,
+				colorRef.current.background[1] * 255,
+				colorRef.current.background[2] * 255,
 				255,
 			);
 			rybDataLayerRef.current.circle(x, y, diameter);
@@ -77,16 +89,16 @@ export function PaintCanvas({ toolRef, colorRef, cubeKey }) {
 		}
 
 		function applyStroke(_x0, _y0, x1, y1) {
-			const tool = toolRef.current.active;
+			const tool = toolRef.current;
 
-			// if (tool === "eraser") {
-			//   eachAlongSegment(_x0, _y0, x1, y1, ERASER_DIAMETER * 0.38, (x, y) => {
-			//     if (x >= 0 && y >= 0 && x < W && y < H)
-			//       stampErase(x, y, ERASER_DIAMETER);
-			//   });
-			//   rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
-			//   return;
-			// }
+			if (tool === "eraser") {
+				// eachAlongSegment(_x0, _y0, x1, y1, ERASER_DIAMETER * 0.38, (x, y) => {
+				// 	if (x >= 0 && y >= 0 && x < W && y < H)
+						stampErase(x1, y1, ERASER_DIAMETER);
+				// });
+				rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
+				return;
+			}
 
 			if (tool === "pencil") {
 				//if (Math.hypot(x1 - _x0, y1 - _y0) < 0.5) {
@@ -117,13 +129,21 @@ export function PaintCanvas({ toolRef, colorRef, cubeKey }) {
 
 		p5.setup = () => {
 			p5.createCanvas(W, H);
+			console.log('cube at setup time:', colorRef.current.cube)
 
 			rgbLayerRef.current = p5.createGraphics(W, H);
 			rybDataLayerRef.current = p5.createGraphics(W, H);
 			rgbLayerRef.current.pixelDensity(1);
 			rybDataLayerRef.current.pixelDensity(1);
 
-			rybDataLayerRef.current.background(0, 0, 0, 0); //clearRYBDataLayer();
+			//clearRYBDataLayer();
+			rybDataLayerRef.current.background(
+				colorRef.current.background[0] * 255,
+				colorRef.current.background[1] * 255,
+				colorRef.current.background[2] * 255,
+				255,
+			);
+
 			rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
 
 			p5.imageMode(p5.CORNER);

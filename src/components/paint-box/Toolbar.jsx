@@ -12,8 +12,10 @@ import rectangleDotted from "@/assets/icons/rectangle-dotted.svg";
 import sprayPaint from "@/assets/icons/spray-paint.svg";
 import star from "@/assets/icons/star.svg";
 import text from "@/assets/icons/text.svg";
+import { usePaint } from "@/context/PaintBoxContext";
 
-export function Toolbar({ selectedTool, onSelectTool }) {
+export function Toolbar() {
+	const { selectedTool, setSelectedTool } = usePaint();
 	const tools = [
 		{ id: "star", src: star, alt: "Star Icon" },
 		{
@@ -47,7 +49,7 @@ export function Toolbar({ selectedTool, onSelectTool }) {
 						key={id}
 						type="button"
 						className={selectedTool === id ? "selected" : ""}
-						onClick={() => onSelectTool(id)}
+						onClick={() => setSelectedTool(id)}
 					>
 						<img src={src} alt={alt} />
 					</button>
