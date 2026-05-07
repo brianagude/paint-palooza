@@ -41,10 +41,12 @@ export function ColorPalette() {
   }
 
   const currentBg = rybToRgbString(backgroundColor);
+  const currentFg = rybToRgbString(foregroundColor);
 
   return (
     <div className="color-palette">
       <div className="current-swatches">
+        <button type="button" className="swatch-btn selected" style={{ background: currentFg }}/>
         <button type="button" className="swatch-btn selected" style={{ background: currentBg }}/>
       </div>
       <div className="swatch-rows">

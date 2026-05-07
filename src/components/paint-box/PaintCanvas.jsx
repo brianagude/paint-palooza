@@ -7,7 +7,7 @@ import { usePaint } from "./PaintBox"
 const W = 450;
 const H = 280;
 const PENCIL_WEIGHT = 2.25;
-const ERASER_DIAMETER = 2.25;
+const ERASER_DIAMETER = 5;
 
 function pointerInCanvas(x, y) {
 	return x >= 0 && y >= 0 && x < W && y < H;
@@ -46,6 +46,10 @@ export function PaintCanvas() {
 	});
 	
 	useEffect(() => {
+		toolRef.current = selectedTool
+	}, [selectedTool]);
+	
+	useEffect(() => {
 		colorRef.current.foreground = foregroundColor
 		colorRef.current.background = backgroundColor
 	}, [foregroundColor, backgroundColor]);
@@ -69,14 +73,15 @@ export function PaintCanvas() {
 			rybDataLayerRef.current.circle(x, y, diameter);
 			rybDataLayerRef.current.pop();
 		}
+
 		function stampErase(x, y, diameter) {
 			rybDataLayerRef.current.push();
 			rybDataLayerRef.current.colorMode(p5.RGB, 255);
 			rybDataLayerRef.current.noStroke();
 			rybDataLayerRef.current.fill(
-				colorRef.current.erase[0] * 255,
-				colorRef.current.erase[1] * 255,
-				colorRef.current.erase[2] * 255,
+				colorRef.current.background[0] * 255,
+				colorRef.current.background[1] * 255,
+				colorRef.current.background[2] * 255,
 				255,
 			);
 			rybDataLayerRef.current.circle(x, y, diameter);
