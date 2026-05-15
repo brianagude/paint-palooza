@@ -1,10 +1,9 @@
 export function MenuBar({ children }) {
-
-    return (
-        <div className="menu-bar">
-            { children }
-        </div>
-    );
+  return (
+      <div className="menu-bar">
+          { children }
+      </div>
+  );
 }
 
 export function MenuBarGroup({ title, children }) {
