@@ -53,6 +53,7 @@ button.selected {
 
 .color-palette {
   grid-column: 1 / -1;
+  margin-top: 8px;
 }
 
 .start-bar {

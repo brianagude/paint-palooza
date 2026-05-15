@@ -40,7 +40,6 @@ export function PaintBox() {
 					<label htmlFor="colorSpace">Color Space:</label>
 					<select
 						name="colorSpace"
-						id="colorSpace"
 						onChange={(e) => setColorSpace(e.target.value)}
 					>
 						{[...cubes].map(([key, cube]) => (
@@ -59,7 +58,7 @@ export function PaintBox() {
 				<ColorPalette />
 			</div>
 			
-			{/* <StatusBar /> */}
+			<StatusBar />
 		</PaintBoxContext.Provider>
 	);
 }
