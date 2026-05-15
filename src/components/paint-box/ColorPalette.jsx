@@ -4,6 +4,7 @@ import { usePaint } from "@/context/PaintBoxContext";
 
 export function ColorPalette() {
   const { colorSpace, foregroundColor, setForegroundColor, backgroundColor, setBackgroundColor } = usePaint();
+
   const PALETTE_RYB = [
     [0, 0, 0],
     [1, 0, 0],
@@ -45,10 +46,23 @@ export function ColorPalette() {
 
   return (
     <div className="color-palette">
-      <div className="current-swatches">
-        <button type="button" className="swatch-btn selected" style={{ background: currentFg }}/>
-        <button type="button" className="swatch-btn selected" style={{ background: currentBg }}/>
-      </div>
+      <button 
+        type="button" 
+        className="current-swatches"
+        onClick={() => {
+          setBackgroundColor(foregroundColor)
+          setForegroundColor(backgroundColor)
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setBackgroundColor(currentFg)
+          setForegroundColor(currentBg)
+        }}
+      >
+        <div className="current-color foreground" style={{ background: currentFg }}/>
+        <div className="current-color background" style={{ background: currentBg }}/>
+      </button>
+
       <div className="swatch-rows">
         {PALETTE_RYB.map((c, i) => {
           return (
@@ -58,6 +72,10 @@ export function ColorPalette() {
               className="swatch-btn selected"
               style={{ background: rybToRgbString(c) }}
               onClick={() => setForegroundColor(c)}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                setBackgroundColor(c)
+              }}
             />
           );
         })}
