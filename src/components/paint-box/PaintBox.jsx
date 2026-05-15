@@ -27,26 +27,16 @@ export function PaintBox() {
 			}}
 		>
 			<div 
-				// className="status-field-border"
+				className="menu-select-wrapper toolbars"
 			>
-				<MenuBar>
+				{/* <MenuBar>
 					<MenuBarGroup title="File">
 						<MenuBarItem
-								// action={() => setColorSpace(key)}
 								title="New"
 							/>
 					</MenuBarGroup>
-					{/* <MenuBarGroup title="Options">
-						{[...cubes].slice(0, 4).map(([key, cube]) => (
-							<MenuBarItem
-								key={key}
-								action={() => setColorSpace(key)}
-								title={cube.title}
-							/>
-						))}
-					</MenuBarGroup> */}
-				</MenuBar>
-				<div className="color-space-wrapper">
+				</MenuBar> */}
+				<div className="color-space-wrapper toolbar">
 					<label htmlFor="colorSpace">Color Space:</label>
 					<select
 						name="colorSpace"
@@ -69,7 +59,7 @@ export function PaintBox() {
 				<ColorPalette />
 			</div>
 			
-			<StatusBar />
+			{/* <StatusBar /> */}
 		</PaintBoxContext.Provider>
 	);
 }
