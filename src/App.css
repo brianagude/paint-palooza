@@ -107,6 +107,59 @@ button.selected {
   gap: 2px;
 }
 
+.current-swatches {
+  padding: 0;
+  height: 36px;
+  width: 36px;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  box-shadow: none;
+  /* background: var(--win-darker); */
+  background-image: url("./assets/checker-bg.png");
+  background-repeat: repeat;
+  cursor: pointer;
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px grey;
+  text-shadow: 1px 1px #222;
+
+  border-top: 1px solid var(--win-gray);
+  border-left: 1px solid var(--win-gray);
+  border-right: 1px solid var(--win-dark);
+  border-bottom: 1px solid var(--win-dark);
+
+  &:not(:disabled):active,
+  &:focus {
+    outline: none;
+  }
+
+  .current-color {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+
+    border-top: 1px solid var(--win-white);
+    border-left: 1px solid var(--win-white);
+    border-right: 1px solid var(--win-dark);
+    border-bottom: 1px solid var(--win-dark);
+  }
+
+  .foreground {
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+  }
+
+  .background {
+    bottom: 6px;
+    right: 4px;
+  }
+}
+
 .swatch-btn {
   padding: 0;
   aspect-ratio: 1/1;

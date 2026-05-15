@@ -59,8 +59,8 @@ export function ColorPalette() {
           setForegroundColor(currentBg)
         }}
       >
-        <div className="swatch-btn selected" style={{ background: currentFg }}/>
-        <div className="swatch-btn selected" style={{ background: currentBg }}/>
+        <div className="current-color foreground" style={{ background: currentFg }}/>
+        <div className="current-color background" style={{ background: currentBg }}/>
       </button>
 
       <div className="swatch-rows">
