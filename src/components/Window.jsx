@@ -6,7 +6,7 @@ import paint from "@/assets/icons/paint-98.svg";
 const WindowContext = createContext(null);
 
 export function Window({ instanceId }) {
-  let {minimize: minimizeWindow, maximize: maximizeWindow, restore: restoreWindow, focus: focusWindow, close: closeWindow, openWindows, registeredApps} = useOS();
+  let {minimize: minimizeWindow, maximize: maximizeWindow, restore: restoreWindow, focus: focusWindow, close: closeWindow, move, openWindows, registeredApps} = useOS();
   
   const windowIndex = openWindows.findIndex( w => w.instanceId === instanceId );
   const window = openWindows[windowIndex];
@@ -29,15 +29,48 @@ export function Window({ instanceId }) {
 
   const style = isMaximized
   ? { position: 'fixed', top: 0, left: 0, width: '100%', height: 'calc(100vh - 28px)', zIndex }
-  : { position: 'fixed', top: position.y, left: position.x, width: size.width, height: size.height, zIndex }
+  : { position: 'fixed', top: position.y, left: position.x, width: size.width, zIndex }
+
+  function startDrag(e) {
+    e.dataTransfer.effectAllowed = "none";
+
+    self.drag = {og: {}, start: {}};
+
+    self.drag.og.x = position.x;
+    self.drag.og.y = position.y;
+
+    self.drag.start.x = e.clientX;
+    self.drag.start.y = e.clientY;
+  }
+
+  function drag(e) {
+
+    e.preventDefault();
+    if (e.screenX === 0) {
+      return;
+    }
+
+    self.drag.dx = e.clientX - self.drag.start.x;
+    self.drag.dy = e.clientY - self.drag.start.y; 
+
+    console.log("move: ", self.drag, {
+      x: self.drag.og.x + self.drag.dx,
+      y: self.drag.og.y + self.drag.dy
+    })
+    move(instanceId, {
+      x: self.drag.og.x + self.drag.dx,
+      y: self.drag.og.y + self.drag.dy
+    });
+
+  }
 
   return (
     <WindowContext.Provider value={{
       instanceId, title, setTitle, isMinimized, isMaximized, isFocused, position, size,
       minimize, maximize, restore, focus, close
       }}>
-      <section className={`paint-box-window window ${window.isMaximized ? 'window--maximized' : ''}`}>
-        <div className="title-bar">
+      <section className={`app-window window`} style={style}>
+        <div className="title-bar" draggable="true" onDragStart={startDrag} onDrag={drag} ondragover={(e)=>{e.preventDefault();e.dataTransfer.dropEffect = "move";}} ondrop={(e)=>{e.preventDefault();return true;}}>
           <div className="icon-title">
             <img src={paint} alt={`${app.name} Icon`} />
             <p className="title-bar-text">{window.title}</p>

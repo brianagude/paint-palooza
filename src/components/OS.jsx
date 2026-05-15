@@ -79,6 +79,14 @@ export function OS({ apps, children }) {
     );
     focus(instanceId);//TODO: This is an async race condition
   }
+
+  function move(instanceId, position) {
+    setOpenWindows(prev => 
+      prev.map(w => w.instanceId === instanceId
+        ? {...w, position: position}
+        : w)
+    );
+  }
   
   useEffect(() => {
     apps.forEach(registerApp);
@@ -86,7 +94,7 @@ export function OS({ apps, children }) {
 
   return (
     <OSContext.Provider value={{ 
-      registeredApps, registerApp, openWindows,
+      registeredApps, registerApp, openWindows, move,
       launch, minimize, maximize, close, restore, focus
       }}>
       {children}
