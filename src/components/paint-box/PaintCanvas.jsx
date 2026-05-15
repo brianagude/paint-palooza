@@ -6,7 +6,6 @@ import { usePaint } from "@/context/PaintBoxContext";
 
 const W = 450;
 const H = 280;
-const PENCIL_WEIGHT = 2.25;
 const ERASER_DIAMETER = 10;
 
 function pointerInCanvas(x, y) {
@@ -34,7 +33,7 @@ function rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef) {
 
 
 export function PaintCanvas() {
-	const { selectedTool, foregroundColor, backgroundColor, colorSpace } = usePaint();
+	const { selectedTool, foregroundColor, backgroundColor, colorSpace,  } = usePaint();
 	
 	const rgbLayerRef = useRef(null);
 	const rybDataLayerRef = useRef(null);
@@ -60,31 +59,17 @@ export function PaintCanvas() {
 	}, [colorSpace]);
 	
 	const [sketch] = useState(() => (p5) => {
-		function stampInk(x, y, diameter) {
+		function strokeInk(x0, y0, x1, y1, diameter, color=colorRef.current.foreground) {
 			rybDataLayerRef.current.push();
 			rybDataLayerRef.current.colorMode(p5.RGB, 255);
-			rybDataLayerRef.current.noStroke();
-			rybDataLayerRef.current.fill(
-				colorRef.current.foreground[0] * 255,
-				colorRef.current.foreground[1] * 255,
-				colorRef.current.foreground[2] * 255,
+			rybDataLayerRef.current.stroke(
+				color[0] * 255,
+				color[1] * 255,
+				color[2] * 255,
 				255,
 			);
-			rybDataLayerRef.current.circle(x, y, diameter);
-			rybDataLayerRef.current.pop();
-		}
-
-		function stampErase(x, y, diameter) {
-			rybDataLayerRef.current.push();
-			rybDataLayerRef.current.colorMode(p5.RGB, 255);
-			rybDataLayerRef.current.noStroke();
-			rybDataLayerRef.current.fill(
-				colorRef.current.background[0] * 255,
-				colorRef.current.background[1] * 255,
-				colorRef.current.background[2] * 255,
-				255,
-			);
-			rybDataLayerRef.current.circle(x, y, diameter);
+			rybDataLayerRef.current.strokeWeight(diameter);
+			rybDataLayerRef.current.line(x0, y0, x1, y1);
 			rybDataLayerRef.current.pop();
 		}
 
@@ -92,23 +77,13 @@ export function PaintCanvas() {
 			const tool = toolRef.current;
 
 			if (tool === "eraser") {
-				// eachAlongSegment(_x0, _y0, x1, y1, ERASER_DIAMETER * 0.38, (x, y) => {
-				// 	if (x >= 0 && y >= 0 && x < W && y < H)
-						stampErase(x1, y1, ERASER_DIAMETER);
-				// });
+				strokeInk(_x0, _y0, x1, y1, ERASER_DIAMETER, colorRef.current.background);
 				rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
 				return;
 			}
 
 			if (tool === "pencil") {
-				//if (Math.hypot(x1 - _x0, y1 - _y0) < 0.5) {
-				// eachAlongSegment(x1, y1, x1, y1, 1, (x, y) => {
-				//   if (x >= 0 && y >= 0 && x < W && y < H)
-				stampInk(x1, y1, PENCIL_WEIGHT * 1.2);
-				// });
-				//} else {
-				//segmentPencil(_x0, _y0, x1, y1);
-				//}
+				strokeInk(_x0, _y0, x1, y1, 1);
 				rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
 				return;
 			}

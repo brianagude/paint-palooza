@@ -194,10 +194,23 @@ button.remove-styling {
   width: 100%;
 }
 
-
 /* menu styling */
 .menu-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2px;
+}
+
+.color-space-wrapper {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+
+  label {
+    white-space: nowrap;
+  }
+
+  select {
+    width: 100%;
+  }
 }
