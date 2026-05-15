@@ -26,23 +26,38 @@ export function PaintBox() {
 				setColorSpace,
 			}}
 		>
-			<MenuBar>
-				<MenuBarGroup title="Options">
-					{[...cubes].slice(0, 4).map(([key, cube]) => (
+			<div 
+				className="menu-select-wrapper toolbars"
+			>
+				{/* <MenuBar>
+					<MenuBarGroup title="File">
 						<MenuBarItem
-							key={key}
-							action={() => setColorSpace(key)}
-							title={cube.title}
-						/>
-					))}
-				</MenuBarGroup>
-			</MenuBar>
+								title="New"
+							/>
+					</MenuBarGroup>
+				</MenuBar> */}
+				<div className="color-space-wrapper toolbar">
+					<label htmlFor="colorSpace">Color Space:</label>
+					<select
+						name="colorSpace"
+						onChange={(e) => setColorSpace(e.target.value)}
+					>
+						{[...cubes].map(([key, cube]) => (
+							<option key={key} value={key}>
+								{cube.title}
+							</option>
+						))}
+					</select>
+				</div>
+			</div>
+			
 
 			<div className="window-body">
 				<Toolbar />
 				<PaintCanvas />
 				<ColorPalette />
 			</div>
+			
 			<StatusBar />
 		</PaintBoxContext.Provider>
 	);
