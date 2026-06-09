@@ -73,6 +73,8 @@ export function PaintCanvas() {
 			rybDataLayerRef.current.pop();
 		}
 
+		//TOOLS: brush, pencil, eraser, spray...
+		//_x0, _y0 are last point (TODO: needs fix in mouseDragged)
 		function applyStroke(_x0, _y0, x1, y1) {
 			const tool = toolRef.current;
 
@@ -102,6 +104,39 @@ export function PaintCanvas() {
 			// }
 		}
 
+
+		//TOOLS: rectangle(shape), polygon, select...
+		let anchor = undefined;
+		let dataLayerSaved = undefined; //TODO: Flesh into undo feature
+
+		function shapePreview(anchor, x, y) {
+			//Clear out any previous previews, resetting the canvas displayed to the latest saved state
+			rybDataLayerRef.current.image(dataLayerSaved, 0, 0);
+
+			//Then draw preview
+			const color = colorRef.current.foreground;
+
+			rybDataLayerRef.current.push();
+			rybDataLayerRef.current.colorMode(p5.RGB, 255);
+			rybDataLayerRef.current.stroke(
+				color[0] * 255,
+				color[1] * 255,
+				color[2] * 255,
+				255,
+			);
+			rybDataLayerRef.current.strokeWeight(1);
+			rybDataLayerRef.current.noFill();
+			rybDataLayerRef.current.rectMode(p5.CORNERS);
+			rybDataLayerRef.current.rect(anchor.x, anchor.y, x, y);
+			rybDataLayerRef.current.pop();
+
+			rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
+		}
+
+		function drawShape(anchor, x, y) {
+
+		}
+
 		p5.setup = () => {
 			p5.createCanvas(W, H);
 			console.log('cube at setup time:', colorRef.current.cube)
@@ -128,13 +163,61 @@ export function PaintCanvas() {
 			p5.image(rgbLayerRef.current, 0, 0);
 		};
 
+		p5.mousePressed = () => {
+			//Reference for when we flesh out undo: https://stackoverflow.com/questions/71231952/why-does-this-undo-logic-not-work-in-p5-js
+			rybDataLayerRef.current.loadPixels();
+			dataLayerSaved = rybDataLayerRef.current.get();
+		}
+
 		p5.mouseDragged = () => {
+			const tool = toolRef.current;
+
 			const x = p5.mouseX;
 			const y = p5.mouseY;
-			if (!pointerInCanvas(x, y) && !pointerInCanvas(p5.pmouseX, p5.pmouseY))
-				return;
-			applyStroke(p5.pmouseX, p5.pmouseY, x, y);
+
+			switch(tool) {
+				case "rectangle":
+					// if anchor is not defined, set anchor to x,y
+					if (!anchor) {
+						anchor = {x, y};
+					}
+					console.log(anchor)
+					shapePreview(anchor, x, y);
+					break;
+
+				case "pencil":
+				case "brush":
+				case "eraser":
+					//TODO: Fix x0,y0 and x1,y1 logic. Currently appears as if only the current coords are passed to applyStroke
+					if (!pointerInCanvas(x, y) && !pointerInCanvas(p5.pmouseX, p5.pmouseY))
+						return;
+					applyStroke(p5.pmouseX, p5.pmouseY, x, y);
+					break;
+
+				default:
+					break;
+			}
+
 		};
+
+		p5.mouseReleased = () => {
+			const tool = toolRef.current;
+
+			const x = p5.mouseX;
+			const y = p5.mouseY;
+
+			switch(tool) {
+				case "rectangle":
+					// drawShape(anchor, curr)
+					if (anchor) {
+						anchor = undefined;
+					}
+					break;
+
+				default:
+					break;
+			}
+		}
 	});
 
 	return <P5Canvas sketch={sketch} />;
