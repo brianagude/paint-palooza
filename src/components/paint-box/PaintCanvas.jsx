@@ -110,6 +110,9 @@ export function PaintCanvas() {
 		let dataLayerSaved = undefined; //TODO: Flesh into undo feature
 
 		function shapePreview(anchor, x, y) {
+
+			const tool = toolRef.current;
+
 			//Clear out any previous previews, resetting the canvas displayed to the latest saved state
 			rybDataLayerRef.current.image(dataLayerSaved, 0, 0);
 
@@ -126,8 +129,24 @@ export function PaintCanvas() {
 			);
 			rybDataLayerRef.current.strokeWeight(1);
 			rybDataLayerRef.current.noFill();
-			rybDataLayerRef.current.rectMode(p5.CORNERS);
-			rybDataLayerRef.current.rect(anchor.x, anchor.y, x, y);
+
+			switch(tool) {
+				case "rectangle":
+					rybDataLayerRef.current.rectMode(p5.CORNERS);
+					rybDataLayerRef.current.rect(anchor.x, anchor.y, x, y);
+					break;
+				case "ellipse":
+					rybDataLayerRef.current.ellipseMode(p5.CORNERS);
+					rybDataLayerRef.current.ellipse(anchor.x, anchor.y, x, y);
+					break;
+				case "roundedRectangle":
+					rybDataLayerRef.current.rectMode(p5.CORNERS);
+					rybDataLayerRef.current.rect(anchor.x, anchor.y, x, y, 8);
+					break;
+				default:
+					break;
+			}
+
 			rybDataLayerRef.current.pop();
 
 			rebuildRgbFromRybData(rgbLayerRef, rybDataLayerRef, colorRef);
@@ -177,11 +196,12 @@ export function PaintCanvas() {
 
 			switch(tool) {
 				case "rectangle":
+				case "ellipse":
+				case "roundedRectangle":
 					// if anchor is not defined, set anchor to x,y
 					if (!anchor) {
 						anchor = {x, y};
 					}
-					console.log(anchor)
 					shapePreview(anchor, x, y);
 					break;
 
@@ -201,22 +221,15 @@ export function PaintCanvas() {
 		};
 
 		p5.mouseReleased = () => {
-			const tool = toolRef.current;
+			// const tool = toolRef.current;
 
-			const x = p5.mouseX;
-			const y = p5.mouseY;
+			// const x = p5.mouseX;
+			// const y = p5.mouseY;
 
-			switch(tool) {
-				case "rectangle":
-					// drawShape(anchor, curr)
-					if (anchor) {
-						anchor = undefined;
-					}
-					break;
-
-				default:
-					break;
+			if (anchor) {
+				anchor = undefined;
 			}
+			
 		}
 	});
 

@@ -39,6 +39,8 @@ export function Toolbar() {
 		{ id: "curvyLine", src: curvyLine, alt: "Curvy Line Icon" },
 		{ id: "rectangle", src: rectangle, alt: "Rectangle Icon" },
 		{ id: "polygon", src: polygon, alt: "Polygon Icon" },
+		{ id: "ellipse", src: polygon, alt: "Ellipse Icon" }, //TODO: fix icon
+		{ id: "roundedRectangle", src: polygon, alt: "Rounded Rectangle Icon" }, //TODO: fix icon
 	];
 
 	return (
