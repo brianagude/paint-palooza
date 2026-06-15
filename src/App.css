@@ -320,3 +320,25 @@ button.remove-styling {
     width: 100%;
   }
 }
+
+.tool-support {
+  padding: 8px 4px;
+  border: 1px solid black;
+  
+  margin-top: 3px;
+  
+}
+
+
+.tool-support-inner {
+  display: flex;
+  flex-direction: column;
+  width: 41px;
+  height: 66px;
+
+  button {
+    max-width: 0;
+    width: 100%;
+    padding: 0 !important;
+  }
+}

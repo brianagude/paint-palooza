@@ -44,19 +44,24 @@ export function Toolbar() {
 	];
 
 	return (
-		<div className="toolbar">
-			<div className="paint-tools">
-				{tools.map(({ id, src, alt }) => (
-					<button
-						key={id}
-						type="button"
-						className={selectedTool === id ? "selected" : ""}
-						onClick={() => setSelectedTool(id)}
-					>
-						<img src={src} alt={alt} />
-					</button>
-				))}
-			</div>
-		</div>
-	);
+    <div className="toolbar">
+      <div className="paint-tools">
+        {tools.map(({ id, src, alt }) => (
+          <button
+            key={id}
+            type="button"
+            className={selectedTool === id ? 'selected' : ''}
+            onClick={() => setSelectedTool(id)}
+          >
+            <img src={src} alt={alt} />
+          </button>
+        ))}
+      </div>
+      <div className="tool-support">
+        <div className="tool-support-inner">
+          <button>tool</button>
+        </div>
+      </div>
+    </div>
+  );
 }
