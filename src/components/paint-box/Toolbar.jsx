@@ -3,6 +3,8 @@ import eyeDropper from "@/assets/icons/eye-dropper.svg";
 import line from "@/assets/icons/line.svg";
 import curvyLine from "@/assets/icons/line-curvy.svg";
 import magnifyingGlass from "@/assets/icons/magnifying-glass.svg";
+import optionOpaque from "@/assets/icons/options-opaque.png";
+import optionTransparent from "@/assets/icons/options-transparent.png";
 import paintBrush from "@/assets/icons/paint-brush.svg";
 import paintBucket from "@/assets/icons/paint-bucket.svg";
 import pencil from "@/assets/icons/pencil.svg";
@@ -44,24 +46,181 @@ export function Toolbar() {
 	];
 
 	return (
-    <div className="toolbar">
-      <div className="paint-tools">
-        {tools.map(({ id, src, alt }) => (
-          <button
-            key={id}
-            type="button"
-            className={selectedTool === id ? 'selected' : ''}
-            onClick={() => setSelectedTool(id)}
-          >
-            <img src={src} alt={alt} />
-          </button>
-        ))}
-      </div>
-      <div className="tool-support">
-        <div className="tool-support-inner">
-          <button>tool</button>
-        </div>
-      </div>
-    </div>
-  );
+		<div className="toolbar">
+			<div className="paint-tools">
+				{tools.map(({ id, src, alt }) => (
+					<button
+						key={id}
+						type="button"
+						className={selectedTool === id ? "selected" : ""}
+						onClick={() => setSelectedTool(id)}
+					>
+						<img src={src} alt={alt} />
+					</button>
+				))}
+			</div>
+			<div className="tool-support status-bar-field">
+				{selectedTool === "star" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected transparency-option">
+							<img src={optionOpaque} alt="opaque" />
+						</button>
+						<button type="button" className="remove-styling transparency-option">
+							<img src={optionTransparent} alt="transparent" />
+						</button>
+					</div>
+				)}
+				{selectedTool === "rectangleDotted" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling transparency-option">
+							<img src={optionOpaque} alt="opaque" />
+						</button>
+						<button type="button" className="remove-styling transparency-option">
+							<img src={optionTransparent} alt="transparent" />
+						</button>
+					</div>
+				)}
+				{selectedTool === "text" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling transparency-option">
+							<img src={optionOpaque} alt="opaque" />
+						</button>
+						<button type="button" className="remove-styling transparency-option">
+							<img src={optionTransparent} alt="transparent" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "eraser" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected brush-size">
+							<div className="square xs" />
+						</button>
+						<button type="button" className="remove-styling brush-size">
+							<div className="square sm" />
+						</button>
+						<button type="button" className="remove-styling brush-size">
+							<div className="square md" />
+						</button>
+						<button type="button" className="remove-styling brush-size">
+							<div className="square lg" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "magnifyingGlass" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected magnify-size">
+							<p>1x</p> <div className="square xs" />
+						</button>
+						<button type="button" className="remove-styling magnify-size">
+							<p>2x</p> <div className="square sm" />
+						</button>
+						<button type="button" className="remove-styling magnify-size">
+							<p>6x</p> <div className="square md" />
+						</button>
+						<button type="button" className="remove-styling magnify-size">
+							<p>8x</p> <div className="square lg" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "line" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected line-size">
+							<div className="line xs" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line sm" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line md" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line lg" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line xl" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "curvyLine" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected line-size">
+							<div className="line xs" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line sm" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line md" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line lg" />
+						</button>
+						<button type="button" className="remove-styling line-size">
+							<div className="line xl" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "rectangle" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected box">
+							<div className="outline" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="outline filled" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="filled" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "polygon" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected box">
+							<div className="outline" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="outline filled" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="filled" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "ellipse" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected box">
+							<div className="outline" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="outline filled" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="filled" />
+						</button>
+					</div>
+				)}
+
+				{selectedTool === "roundedRectangle" && (
+					<div className="tool-support-inner">
+						<button type="button" className="remove-styling selected box">
+							<div className="outline" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="outline filled" />
+						</button>
+						<button type="button" className="remove-styling box">
+							<div className="filled" />
+						</button>
+					</div>
+				)}
+			</div>
+		</div>
+	);
 }
