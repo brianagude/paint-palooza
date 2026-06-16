@@ -9,15 +9,22 @@ import { Toolbar } from "./Toolbar";
 
 export function PaintBox() {
 	const [selectedTool, setSelectedTool] = useState("pencil");
+	const [toolSettings, setToolSettings] = useState({});
 	const [foregroundColor, setForegroundColor] = useState([1, 1, 1]);
 	const [backgroundColor, setBackgroundColor] = useState([0, 0, 0]);
 	const [colorSpace, setColorSpace] = useState("itten");
+
+	function setToolSetting(toolId, index) {
+		setToolSettings((prev) => ({ ...prev, [toolId]: index }));
+	}
 
 	return (
 		<PaintBoxContext.Provider
 			value={{
 				selectedTool,
 				setSelectedTool,
+				toolSettings,
+				setToolSetting,
 				foregroundColor,
 				setForegroundColor,
 				backgroundColor,
