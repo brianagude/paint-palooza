@@ -14,35 +14,16 @@ export function ColorSettings() {
         setColorSpace,
       }}
     >
-      {/* <div 
-        className="menu-select-wrapper toolbars"
-      >
-        <div className="color-space-wrapper toolbar">
-          <label htmlFor="colorSpace">Color Space:</label>
-          <select
-            name="colorSpace"
-            onChange={(e) => setColorSpace(e.target.value)}
-          >
-            {[...cubes].map(([key, cube]) => (
-              <option key={key} value={key}>
-                {cube.title}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div> */}
-      
-
       <div className="window-body color-settings">
 
         {/* 
           To Do 
-          (1) Add date and author table headers  
+          (1) Add name, date and author table headers  
           (2) Create click functions
           (3) P5 Visualizations
           (4) Landmarks
         */}
-        
+
         <fieldset>
           <legend>Color Cube</legend>
           <div 
