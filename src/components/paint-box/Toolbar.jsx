@@ -16,8 +16,43 @@ import star from "@/assets/icons/star.svg";
 import text from "@/assets/icons/text.svg";
 import { usePaint } from "@/context/PaintBoxContext";
 
+function optionClass(baseClass, index, activeSetting) {
+	return `remove-styling ${baseClass}${activeSetting === index ? " selected" : ""}`;
+}
+
+function FillOptions({ activeSetting, onSelect }) {
+	return (
+		<div className="tool-options-list">
+			<button type="button" className={optionClass("fill-option", 0, activeSetting)} onClick={() => onSelect(0)}>
+				<img src={optionOpaque} alt="opaque" />
+			</button>
+			<button type="button" className={optionClass("fill-option", 1, activeSetting)} onClick={() => onSelect(1)}>
+				<img src={optionTransparent} alt="transparent" />
+			</button>
+		</div>
+	);
+}
+
+function ShapeStyleOptions({ activeSetting, onSelect }) {
+	return (
+		<div className="tool-options-list">
+			<button type="button" className={optionClass("shape-style", 0, activeSetting)} onClick={() => onSelect(0)}>
+				<div className="outline" />
+			</button>
+			<button type="button" className={optionClass("shape-style", 1, activeSetting)} onClick={() => onSelect(1)}>
+				<div className="outline filled" />
+			</button>
+			<button type="button" className={optionClass("shape-style", 2, activeSetting)} onClick={() => onSelect(2)}>
+				<div className="filled" />
+			</button>
+		</div>
+	);
+}
+
 export function Toolbar() {
-	const { selectedTool, setSelectedTool } = usePaint();
+	const { selectedTool, setSelectedTool, toolSettings, setToolSetting } = usePaint();
+	const activeSetting = toolSettings[selectedTool] ?? 0;
+
 	const tools = [
 		{ id: "star", src: star, alt: "Star Icon" },
 		{
@@ -42,8 +77,14 @@ export function Toolbar() {
 		{ id: "rectangle", src: rectangle, alt: "Rectangle Icon" },
 		{ id: "polygon", src: polygon, alt: "Polygon Icon" },
 		{ id: "ellipse", src: polygon, alt: "Ellipse Icon" }, //TODO: fix icon
-		{ id: "roundedRectangle", src: polygon, alt: "Rounded Rectangle Icon" }, //TODO: fix icon
+		{
+			id: "roundedRectangle",
+			src: polygon,
+			alt: "Rounded Rectangle Icon",
+		}, //TODO: fix icon
 	];
+
+	const sharedProps = { activeSetting, onSelect: (i) => setToolSetting(selectedTool, i) };
 
 	return (
 		<div className="toolbar">
@@ -59,167 +100,69 @@ export function Toolbar() {
 					</button>
 				))}
 			</div>
-			<div className="tool-support status-bar-field">
-				{selectedTool === "star" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected transparency-option">
-							<img src={optionOpaque} alt="opaque" />
-						</button>
-						<button type="button" className="remove-styling transparency-option">
-							<img src={optionTransparent} alt="transparent" />
-						</button>
-					</div>
-				)}
-				{selectedTool === "rectangleDotted" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling transparency-option">
-							<img src={optionOpaque} alt="opaque" />
-						</button>
-						<button type="button" className="remove-styling transparency-option">
-							<img src={optionTransparent} alt="transparent" />
-						</button>
-					</div>
-				)}
-				{selectedTool === "text" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling transparency-option">
-							<img src={optionOpaque} alt="opaque" />
-						</button>
-						<button type="button" className="remove-styling transparency-option">
-							<img src={optionTransparent} alt="transparent" />
-						</button>
-					</div>
-				)}
+			<div className="tool-options status-bar-field">
+				{selectedTool === "star" && <FillOptions {...sharedProps} />}
+				{selectedTool === "rectangleDotted" && <FillOptions {...sharedProps} />}
+				{selectedTool === "text" && <FillOptions {...sharedProps} />}
 
 				{selectedTool === "eraser" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected brush-size">
+					<div className="tool-options-list">
+						<button type="button" className={optionClass("size-picker", 0, activeSetting)} onClick={() => setToolSetting(selectedTool, 0)}>
 							<div className="square xs" />
 						</button>
-						<button type="button" className="remove-styling brush-size">
+						<button type="button" className={optionClass("size-picker", 1, activeSetting)} onClick={() => setToolSetting(selectedTool, 1)}>
 							<div className="square sm" />
 						</button>
-						<button type="button" className="remove-styling brush-size">
+						<button type="button" className={optionClass("size-picker", 2, activeSetting)} onClick={() => setToolSetting(selectedTool, 2)}>
 							<div className="square md" />
 						</button>
-						<button type="button" className="remove-styling brush-size">
+						<button type="button" className={optionClass("size-picker", 3, activeSetting)} onClick={() => setToolSetting(selectedTool, 3)}>
 							<div className="square lg" />
 						</button>
 					</div>
 				)}
 
 				{selectedTool === "magnifyingGlass" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected magnify-size">
+					<div className="tool-options-list">
+						<button type="button" className={optionClass("zoom-picker", 0, activeSetting)} onClick={() => setToolSetting(selectedTool, 0)}>
 							<p>1x</p> <div className="square xs" />
 						</button>
-						<button type="button" className="remove-styling magnify-size">
+						<button type="button" className={optionClass("zoom-picker", 1, activeSetting)} onClick={() => setToolSetting(selectedTool, 1)}>
 							<p>2x</p> <div className="square sm" />
 						</button>
-						<button type="button" className="remove-styling magnify-size">
+						<button type="button" className={optionClass("zoom-picker", 2, activeSetting)} onClick={() => setToolSetting(selectedTool, 2)}>
 							<p>6x</p> <div className="square md" />
 						</button>
-						<button type="button" className="remove-styling magnify-size">
+						<button type="button" className={optionClass("zoom-picker", 3, activeSetting)} onClick={() => setToolSetting(selectedTool, 3)}>
 							<p>8x</p> <div className="square lg" />
 						</button>
 					</div>
 				)}
 
-				{selectedTool === "line" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected line-size">
+				{(selectedTool === "line" || selectedTool === "curvyLine") && (
+					<div className="tool-options-list">
+						<button type="button" className={optionClass("stroke-picker", 0, activeSetting)} onClick={() => setToolSetting(selectedTool, 0)}>
 							<div className="line xs" />
 						</button>
-						<button type="button" className="remove-styling line-size">
+						<button type="button" className={optionClass("stroke-picker", 1, activeSetting)} onClick={() => setToolSetting(selectedTool, 1)}>
 							<div className="line sm" />
 						</button>
-						<button type="button" className="remove-styling line-size">
+						<button type="button" className={optionClass("stroke-picker", 2, activeSetting)} onClick={() => setToolSetting(selectedTool, 2)}>
 							<div className="line md" />
 						</button>
-						<button type="button" className="remove-styling line-size">
+						<button type="button" className={optionClass("stroke-picker", 3, activeSetting)} onClick={() => setToolSetting(selectedTool, 3)}>
 							<div className="line lg" />
 						</button>
-						<button type="button" className="remove-styling line-size">
+						<button type="button" className={optionClass("stroke-picker", 4, activeSetting)} onClick={() => setToolSetting(selectedTool, 4)}>
 							<div className="line xl" />
 						</button>
 					</div>
 				)}
 
-				{selectedTool === "curvyLine" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected line-size">
-							<div className="line xs" />
-						</button>
-						<button type="button" className="remove-styling line-size">
-							<div className="line sm" />
-						</button>
-						<button type="button" className="remove-styling line-size">
-							<div className="line md" />
-						</button>
-						<button type="button" className="remove-styling line-size">
-							<div className="line lg" />
-						</button>
-						<button type="button" className="remove-styling line-size">
-							<div className="line xl" />
-						</button>
-					</div>
-				)}
-
-				{selectedTool === "rectangle" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected box">
-							<div className="outline" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="outline filled" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="filled" />
-						</button>
-					</div>
-				)}
-
-				{selectedTool === "polygon" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected box">
-							<div className="outline" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="outline filled" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="filled" />
-						</button>
-					</div>
-				)}
-
-				{selectedTool === "ellipse" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected box">
-							<div className="outline" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="outline filled" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="filled" />
-						</button>
-					</div>
-				)}
-
-				{selectedTool === "roundedRectangle" && (
-					<div className="tool-support-inner">
-						<button type="button" className="remove-styling selected box">
-							<div className="outline" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="outline filled" />
-						</button>
-						<button type="button" className="remove-styling box">
-							<div className="filled" />
-						</button>
-					</div>
-				)}
+				{selectedTool === "rectangle" && <ShapeStyleOptions {...sharedProps} />}
+				{selectedTool === "polygon" && <ShapeStyleOptions {...sharedProps} />}
+				{selectedTool === "ellipse" && <ShapeStyleOptions {...sharedProps} />}
+				{selectedTool === "roundedRectangle" && <ShapeStyleOptions {...sharedProps} />}
 			</div>
 		</div>
 	);

@@ -321,7 +321,7 @@ button.remove-styling {
   }
 }
 
-.tool-support {
+.tool-options {
   margin: 3px auto 0;
   width: 44px;
   height: 66px;
@@ -332,7 +332,7 @@ button.remove-styling {
   padding: 0;
 }
 
-.tool-support-inner {
+.tool-options-list {
   display: flex;
   flex-direction: column;
   width: 41px;
@@ -352,7 +352,7 @@ button.remove-styling {
     background: var(--win-blue) !important;
   }
 
-  .transparency-option {
+  .fill-option {
     padding: 2px;
     img {
       width: 100%;
@@ -360,108 +360,101 @@ button.remove-styling {
     }
   }
 
-  .brush-size {
+  /* shared base for all picker button types */
+  .size-picker,
+  .zoom-picker,
+  .stroke-picker {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    .square {
-      aspect-ratio: 1/1;
-      background: black;
-      height: auto;
-    }
-
-    .xs {
-      width: 3px;
-    }
-    .sm {
-      width: 5px;
-    }
-    .md {
-      width: 7px;
-    }
-    .lg {
-      width: 9px;
-    }
   }
 
-  .brush-size.selected {
-    .square {
-      background: var(--win-white) !important;
-    }
-  }
-
-  .magnify-size {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .zoom-picker,
+  .stroke-picker {
     gap: 4px;
     color: black;
+  }
 
+  /* shared square indicator base (eraser size + zoom level) */
+  .size-picker .square,
+  .zoom-picker .square {
+    aspect-ratio: 1/1;
+    background: black;
+    height: auto;
+  }
+
+  .size-picker.selected .square,
+  .zoom-picker.selected .square {
+    background: var(--win-white) !important;
+  }
+
+  .size-picker {
     .square {
-      aspect-ratio: 1/1;
-      background: black;
-      height: auto;
-    }
-
-    .xs {
-      width: 1px;
-    }
-    .sm {
-      width: 2px;
-    }
-    .md {
-      width: 4px;
-    }
-    .lg {
-      width: 8px;
+      &.xs {
+        width: 3px;
+      }
+      &.sm {
+        width: 5px;
+      }
+      &.md {
+        width: 7px;
+      }
+      &.lg {
+        width: 9px;
+      }
     }
   }
 
-  .magnify-size.selected {
-    color: var(--win-white);
+  .zoom-picker {
     .square {
-      background: var(--win-white) !important;
+      &.xs {
+        width: 1px;
+      }
+      &.sm {
+        width: 2px;
+      }
+      &.md {
+        width: 4px;
+      }
+      &.lg {
+        width: 8px;
+      }
+    }
+
+    &.selected {
+      color: var(--win-white);
     }
   }
 
-  .line-size {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    color: black;
+  .stroke-picker {
     padding: 1px 6px;
 
     .line {
       width: 100%;
       background: black;
+      &.xs {
+        height: 1px;
+      }
+      &.sm {
+        height: 2px;
+      }
+      &.md {
+        height: 4px;
+      }
+      &.lg {
+        height: 5px;
+      }
+      &.xl {
+        height: 7px;
+      }
     }
 
-    .xs {
-      height: 1px;
-    }
-    .sm {
-      height: 2px;
-    }
-    .md {
-      height: 4px;
-    }
-    .lg {
-      height: 5px;
-    }
-    .xl {
-      height: 7px;
-    }
-  }
-
-  .line-size.selected {
-    .line {
+    &.selected .line {
       background: var(--win-white) !important;
     }
   }
 
-  .box {
+  .shape-style {
     padding: 2px 6px;
 
     .outline {
@@ -475,11 +468,9 @@ button.remove-styling {
       width: 100%;
       height: 10px;
     }
-  }
 
-  .box.selected {
-    .outline {
-      border: 1px solid white;
+    &.selected .outline {
+      border: 1px solid var(--win-white);
     }
   }
 }
