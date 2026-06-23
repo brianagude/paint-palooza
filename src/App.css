@@ -479,7 +479,7 @@ button.remove-styling {
 
 .color-settings {
   display: grid;
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: 0.4fr 1fr !important;
   gap: 10px;
   padding: 10px;
 }
@@ -491,4 +491,15 @@ fieldset.full-width {
 .sunken-panel {
   height: 120px;
 }
- 
+
+.landmarks-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.landmark {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
